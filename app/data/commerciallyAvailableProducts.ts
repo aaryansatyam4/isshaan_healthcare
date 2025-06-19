@@ -427,7 +427,7 @@ export const commerciallyAvailableProducts = [
 },
 {
   id: 17,
-  name: "BOLNOL GEL / BOLNOL RELAX GEL",
+  name: "BOLNOL GEL - BOLNOL RELAX GEL",
   type: "Gel",
   image: "BolnolGel.jpg",
   packing: "30 GM",
