@@ -146,7 +146,7 @@ export const commerciallyAvailableProducts = [
   },
   {
     id: 6,
-    name: "ACICLODIAR-250_500",
+    name: "ACICLODIAR-(250,500)",
     type: "Injection",
     image: "aciclodiar-250-500.jpg",
     packing: "VIAL",
