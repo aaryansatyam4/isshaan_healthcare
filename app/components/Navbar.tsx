@@ -1,47 +1,50 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, ChevronDown } from "lucide-react"
-import { useLanguage } from "@/contexts/LanguageContext"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, ChevronDown } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [showLanguages, setShowLanguages] = useState(false)
-  const [showProductsDropdown, setShowProductsDropdown] = useState(false)
-  const { language, setLanguage, t } = useLanguage()
-  const pathname = usePathname()
+  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [showLanguages, setShowLanguages] = useState(false);
+  const [showProductsDropdown, setShowProductsDropdown] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
+  const pathname = usePathname();
 
-  const languages = [
-    { code: "en", name: "English", flag: "🇺🇸" },
-    { code: "ru", name: "Русский", flag: "🇷🇺" },
-    { code: "fr", name: "Français", flag: "🇫🇷" },
-    { code: "es", name: "Español", flag: "🇪🇸" },
-  ]
-
+  /* header shadow on scroll */
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50)
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    const onScroll = () => setIsScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
+  /* nav items */
   const navItems = [
-    { name: t("home"), path: "/" },
-    { name: t("about"), path: "/about" },
+    { name: t("home"),    path: "/" },
+    { name: t("about"),   path: "/about" },
     {
       name: t("products"),
       path: "/products",
       hasDropdown: true,
       dropdownItems: [
         { name: t("genericProducts"), path: "/products/generic" },
-        { name: "Our Products", path: "/products/our-products" },
+        { name: t("ourProducts"),     path: "/products/our-products" },  // 🔤
       ],
     },
     { name: t("contact"), path: "/contact" },
-  ]
+  ];
+
+  /* language list */
+  const languages = [
+    { code: "en", name: "English" },
+    { code: "ru", name: "Русский" },
+    { code: "fr", name: "Français" },
+    { code: "es", name: "Español" },
+  ];
 
   return (
     <motion.nav
@@ -54,28 +57,27 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center">
             <img src="/logo.png" alt="Isshaan Healthcare Logo" className="w-24 h-12 object-contain" />
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* ───── Desktop nav ───── */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <div key={item.path} className="relative">
                 {item.hasDropdown ? (
                   <div
-                    className="relative"
                     onMouseEnter={() => setShowProductsDropdown(true)}
                     onMouseLeave={() => setShowProductsDropdown(false)}
                   >
                     <button
-                      className={`px-3 py-2 text-sm font-medium flex items-center space-x-1 transition-colors duration-200 ${
+                      className={`px-3 py-2 text-sm font-medium flex items-center space-x-1 transition-colors ${
                         pathname.startsWith("/products")
                           ? "text-yellow-600"
                           : "text-gray-700 hover:text-yellow-600"
                       }`}
                     >
-                      <span>{item.name}</span>
+                      {item.name}
                       <ChevronDown className="w-4 h-4" />
                     </button>
 
@@ -85,17 +87,19 @@ export default function Navbar() {
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
-                          className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2"
+                          className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border py-2"
                         >
-                          {item.dropdownItems?.map((dropdownItem) => (
+                          {item.dropdownItems?.map((d) => (
                             <Link
-                              key={dropdownItem.path}
-                              href={dropdownItem.path}
-                              className={`block px-4 py-2 text-sm transition-colors duration-200 hover:bg-yellow-50 ${
-                                pathname === dropdownItem.path ? "text-yellow-600 bg-yellow-50" : "text-gray-700"
+                              key={d.path}
+                              href={d.path}
+                              className={`block px-4 py-2 text-sm transition-colors ${
+                                pathname === d.path
+                                  ? "text-yellow-600 bg-yellow-50"
+                                  : "text-gray-700 hover:bg-yellow-50"
                               }`}
                             >
-                              {dropdownItem.name}
+                              {d.name}
                             </Link>
                           ))}
                         </motion.div>
@@ -105,7 +109,7 @@ export default function Navbar() {
                 ) : (
                   <Link
                     href={item.path}
-                    className={`relative px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                    className={`relative px-3 py-2 text-sm font-medium transition-colors ${
                       pathname === item.path ? "text-yellow-600" : "text-gray-700 hover:text-yellow-600"
                     }`}
                   >
@@ -122,16 +126,15 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Language Switcher & Mobile Toggle */}
+          {/* ───── Lang switch + mobile icon ───── */}
           <div className="flex items-center space-x-4">
-            {/* Language Switcher */}
+            {/* Language switcher */}
             <div className="relative">
               <button
-                onClick={() => setShowLanguages(!showLanguages)}
+                onClick={() => setShowLanguages((s) => !s)}
                 className="flex items-center space-x-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-yellow-600"
               >
-                <span>{languages.find((lang) => lang.code === language)?.flag}</span>
-                <span className="hidden sm:inline">{languages.find((lang) => lang.code === language)?.name}</span>
+                <span className="hidden sm:inline">{languages.find((l) => l.code === language)?.name}</span>
                 <ChevronDown className="w-4 h-4" />
               </button>
 
@@ -141,21 +144,20 @@ export default function Navbar() {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2"
+                    className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border py-2"
                   >
                     {languages.map((lang) => (
                       <button
                         key={lang.code}
                         onClick={() => {
-                          setLanguage(lang.code as any)
-                          setShowLanguages(false)
+                          setLanguage(lang.code as any);
+                          setShowLanguages(false);
                         }}
-                        className={`w-full text-left px-4 py-2 text-sm flex items-center space-x-2 hover:bg-yellow-50 ${
+                        className={`w-full text-left px-4 py-2 text-sm hover:bg-yellow-50 ${
                           language === lang.code ? "text-yellow-600 bg-yellow-50" : "text-gray-700"
                         }`}
                       >
-                        <span>{lang.flag}</span>
-                        <span>{lang.name}</span>
+                        {lang.name}
                       </button>
                     ))}
                   </motion.div>
@@ -163,17 +165,14 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 text-gray-700 hover:text-yellow-600"
-            >
+            {/* mobile burger */}
+            <button onClick={() => setIsOpen(!isOpen)} className="md:hidden p-2 text-gray-700 hover:text-yellow-600">
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* ───── Mobile Nav ───── */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -186,28 +185,28 @@ export default function Navbar() {
                 {navItems.map((item) => (
                   <div key={item.path}>
                     {item.hasDropdown ? (
-                      <div className="space-y-1">
+                      <>
                         <div className="px-3 py-2 text-sm font-medium text-gray-700">{item.name}</div>
-                        {item.dropdownItems?.map((dropdownItem) => (
+                        {item.dropdownItems?.map((d) => (
                           <Link
-                            key={dropdownItem.path}
-                            href={dropdownItem.path}
+                            key={d.path}
+                            href={d.path}
                             onClick={() => setIsOpen(false)}
-                            className={`block px-6 py-2 text-sm rounded-lg transition-colors duration-200 ${
-                              pathname === dropdownItem.path
+                            className={`block px-6 py-2 text-sm rounded-lg ${
+                              pathname === d.path
                                 ? "text-yellow-600 bg-yellow-50"
                                 : "text-gray-600 hover:text-yellow-600 hover:bg-yellow-50"
                             }`}
                           >
-                            {dropdownItem.name}
+                            {d.name}
                           </Link>
                         ))}
-                      </div>
+                      </>
                     ) : (
                       <Link
                         href={item.path}
                         onClick={() => setIsOpen(false)}
-                        className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
+                        className={`px-3 py-2 text-sm font-medium rounded-lg ${
                           pathname === item.path
                             ? "text-yellow-600 bg-yellow-50"
                             : "text-gray-700 hover:text-yellow-600 hover:bg-yellow-50"
@@ -224,5 +223,5 @@ export default function Navbar() {
         </AnimatePresence>
       </div>
     </motion.nav>
-  )
+  );
 }

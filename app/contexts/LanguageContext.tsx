@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, type ReactNode } from "react"
+import { createContext, useContext, useState, useCallback, useMemo, type ReactNode } from "react"
 
 type Language = "en" | "ru" | "fr" | "es"
 
@@ -12,9 +12,19 @@ interface LanguageContextType {
 
 const translations = {
   en: {
+
+  backToProducts: "Back to Our Products",
+  categoryPageSubtext: "Explore our comprehensive range of {category} products designed for optimal therapeutic outcomes.",
+  productsAvailable: "Products Available",
+  noProductsFound: "No products found in this category.",
+  composition: "Composition",
+  packing: "Packing",
+  registeredCountries: "Registered Countries",
+  viewDetails: "View Details",
+  products: "Products",
+    bestSelling: "Best Selling",
     home: "Home",
     about: "About Us",
-    products: "Products",
     distributors: "Distributors",
     contact: "Contact Us",
     career: "Career",
@@ -46,11 +56,125 @@ const translations = {
     companyOverview: "Company Overview",
     leadership: "Leadership Team",
     certifications: "Certifications & Quality Control",
+    our: "Our",
+manufacturingExcellence: "Manufacturing Excellence",
+manufacturingText1:
+  "At <strong>Naxcuure&nbsp;Healthcare</strong>, we operate with state-of-the-art infrastructure certified under <span class='font-medium text-yellow-600'>WHO-GMP, ISO</span> and <span class='font-medium text-yellow-600'>FDA</span> standards. Our commitment to quality drives us to produce pharmaceuticals with global compliance and safety.",
+manufacturingText2:
+  "From formulation to packaging, every step is engineered for excellence, ensuring world-class efficacy and reliability.",
+visitSite: "Visit Naxcuure.com",
+connectWithUs: "Connect With Us",
+connect: "Connect",
+ quickLinks: "Quick Links",
+  contactInfo: "Contact Info",
+  ourProducts: "Our Products",
+  footerDescription: "Leading pharmaceutical company committed to improving global health through innovative medicines and quality healthcare solutions.",
+  footerAddress: "G-94, G Block, Sector 63\nNoida, Uttar Pradesh 201301",
+
+  aboutSubtitle: "Pioneering pharmaceutical excellence for over 20 years, dedicated to improving lives through innovative healthcare solutions.",
+  companyOverviewText1: "Founded in 2007, Isshaan has evolved from a modest pharmaceutical venture into a trusted name in global healthcare. Guided by a strong commitment to quality, innovation, and patient well-being, we have developed a diverse range of life-enhancing medicines that support millions of lives across the world.",
+  companyOverviewText2: "With state-of-the-art manufacturing facilities and a dedicated team of healthcare professionals, we continue to push the boundaries of pharmaceutical science to address unmet medical needs.",
+  ourCore: "Our Core",
+  values: "Values",
+  excellence: "Excellence",
+  excellenceText: "We strive for excellence in everything we do, from research and development to manufacturing and customer service.",
+  innovation: "Innovation",
+  innovationText: "We embrace innovation and cutting-edge technology to develop breakthrough pharmaceutical solutions.",
+  compassion: "Compassion",
+  compassionText: "Patient care is at the heart of everything we do, driving our commitment to improving lives worldwide.",
+  journey: "Journey",
+  countries: "Countries",
+  timeline: {
+    2007: "Isshaan Healthcare was founded with a vision to deliver high-quality, affordable medicines.",
+    2010: "Entered the CIS (Commonwealth of Independent States) region with strategic partnerships and product registrations.",
+    2013: "Expanded product line to include 50+ generics across major therapeutic segments.",
+    2016: "Marked significant presence in African markets, focusing on WHO-compliant formulations.",
+    2019: "Commenced operations in Southeast Asia, with Cambodia as a key export destination.",
+    2022: "Crossed 100+ product approvals across regulated and semi-regulated markets.",
+    2024: "Established as a trusted global exporter in 20+ countries with a strong distribution network."
+  },
+  leadershipTeam: {
+    arvind: {
+      position: "Operation Head",
+      bio: "Over 20 years of experience in pharmaceutical industry leadership."
+    },
+    shubhaankar: {
+      position: "Management Team",
+      bio: "Kuch toh ho"
+    }
+  },
+  genericTagline: "High-quality generic medications for affordable, effective healthcare.",
+searchPlaceholder: "Search by name or composition",
+allTypes: "All Types",
+showing: "Showing",
+of: "of",
+sno: "S.No",
+type: "Type",
+product: "Product",
+noProducts: "No products found.",
+previous: "Previous",
+next: "Next",
+page: "Page",
+category: {
+    Syrup: "Syrup",
+    Tablet: "Tablet",
+    Injection: "Injection",
+    Suspension: "Suspension",
+    Other: "Other",
+    Gel: "Gel",
+    Capsule: "Capsule",
+    Gummy: "Gummy",
+    Sachet: "Sachet",
+    Infusion: "Infusion",
+    Granules: "Granules",
+    Lozenges: "Lozenges",
+    "Nasal Drops": "Nasal Drops",
+    "Oral Drops": "Oral Drops"
+},
+viewProducts: "View Products"   ,
+us: "Us",
+contactSubtitle: "Get in touch with our team. We're here to help with your pharmaceutical needs and answer any questions you may have.",
+thankYouMessage: "Thank you for your message! We will get back to you soon.",
+namePlaceholder: "Enter your full name",
+emailPlaceholder: "Enter your email address",
+phonePlaceholder: "Enter your phone number",
+messagePlaceholder: "Enter your message",
+getInTouch: "Get In Touch",
+getInTouchText: "We're here to help and answer any question you might have. We look forward to hearing from you.",
+phoneNumbers: "Main: +91 9560797538\nSales: +91 9560797336",
+emailAddresses: "General: info@isshaan.com\nSales: sales@isshaan.com\nSupport: support@pharmaex.com",
+businessHours: "Business Hours",
+businessHoursText: "Monday – Friday: 9:00 AM – 6:00 PM\nSaturday: 9:00 AM – 6:00 PM\nSunday: Closed",
+find: "Find",
+mapSubtitle: "Visit our headquarters in the heart of the medical district.",
+
+  ourProductsTagline: "Discover our comprehensive range of branded pharmaceutical products, neatly categorized for easy access.",
+  allProducts: "All Products",
+  searchPlaceholderProducts: "Search by name, composition, or country...",
+  productList: "Product List",
+  matchingProducts: "matching products found",
+
+
   },
   ru: {
+
+      backToProducts: "Назад к продуктам",
+  categoryPageSubtext: "Исследуйте наш широкий ассортимент {category}-продуктов, разработанных для оптимальной терапии.",
+  productsAvailable: "доступных продуктов",
+  noProductsFound: "В этой категории продуктов нет.",
+  composition: "Состав",
+  packing: "Упаковка",
+  registeredCountries: "Зарегистрированные страны",
+  viewDetails: "Подробнее",
+  products: "Продукты",
+      quickLinks: "Быстрые ссылки",
+  contactInfo: "Контакты",
+  ourProducts: "Наши продукты",
+  footerDescription: "Ведущая фармацевтическая компания, стремящаяся улучшать глобальное здоровье с помощью инновационных лекарств и качественных мед-решений.",
+    bestSelling: "Лидеры продаж",
     home: "Главная",
     about: "О нас",
-    products: "Продукты",
+   
     distributors: "Дистрибьюторы",
     contact: "Контакты",
     career: "Карьера",
@@ -85,11 +209,115 @@ const translations = {
     companyOverview: "Обзор компании",
     leadership: "Команда руководителей",
     certifications: "Сертификаты и контроль качества",
+    our: "Наше",
+manufacturingExcellence: "Производственное превосходство",
+manufacturingText1:
+  "В <strong>Naxcuure&nbsp;Healthcare</strong> мы работаем на современном оборудовании, сертифицированном по стандартам <span class='font-medium text-yellow-600'>WHO-GMP, ISO</span> и <span class='font-medium text-yellow-600'>FDA</span>. Наша приверженность качеству позволяет нам выпускать фармпродукцию, соответствующую мировым требованиям безопасности.",
+manufacturingText2:
+  "От формулирования до упаковки каждый этап выстроен для совершенства, обеспечивая мирового уровня эффективность и надёжность.",
+visitSite: "Перейти на Naxcuure.com",
+connectWithUs: "Свяжитесь с нами",
+connect: "Связаться",
+footerAddress: "G-94, сектор G, Сектор 63\nНоида, Уттар-Прадеш 201301",
+
+  aboutSubtitle: "Уже более 20 лет мы обеспечиваем фармацевтическое превосходство, улучшая жизни с помощью инновационных решений в области здравоохранения.",
+  companyOverviewText1: "Основанная в 2007 году, компания Isshaan превратилась из скромного фармацевтического стартапа в признанное имя в глобальной системе здравоохранения.",
+  companyOverviewText2: "Благодаря современным производственным мощностям и преданной команде специалистов, мы продолжаем раздвигать границы науки.",
+  ourCore: "Наши основные",
+  values: "Ценности",
+  excellence: "Превосходство",
+  excellenceText: "Мы стремимся к совершенству во всем — от исследований до обслуживания клиентов.",
+  innovation: "Инновации",
+  innovationText: "Мы внедряем новейшие технологии для создания прорывных решений.",
+  compassion: "Сострадание",
+  compassionText: "Забота о пациентах — в центре нашей миссии по улучшению здоровья.",
+  journey: "Путь",
+  countries: "Страны",
+  timeline: {
+    2007: "Основание Isshaan Healthcare с целью предоставить качественные и доступные лекарства.",
+    2010: "Выход на рынок СНГ с партнерствами и регистрацией продуктов.",
+    2013: "Расширение до 50+ дженериков в различных терапевтических сегментах.",
+    2016: "Выход на африканский рынок с продукцией, соответствующей требованиям ВОЗ.",
+    2019: "Начало работы в Юго-Восточной Азии, особенно в Камбодже.",
+    2022: "Пройден рубеж в 100+ одобренных продуктов.",
+    2024: "Экспортер в более чем 20 стран с надежной сетью дистрибуции."
+  },
+  leadershipTeam: {
+    arvind: {
+      position: "Руководитель операций",
+      bio: "Более 20 лет опыта в фармацевтической отрасли."
+    },
+    shubhaankar: {
+      position: "Команда управления",
+      bio: "Что-то да есть"
+    }
+  },
+  genericTagline: "Высококачественные дженерики по доступной цене для эффективного лечения.",
+searchPlaceholder: "Поиск по названию или составу",
+allTypes: "Все типы",
+showing: "Показано",
+of: "из",
+sno: "№",
+type: "Тип",
+product: "Продукт",
+
+noProducts: "Продукты не найдены.",
+previous: "Предыдущая",
+next: "Следующая",
+page: "Страница",
+category: {
+    Syrup: "Сироп",
+    Tablet: "Таблетка",
+    Injection: "Инъекция",
+    Suspension: "Суспензия",
+    Other: "Другое",
+    Gel: "Гель",
+    Capsule: "Капсула",
+    Gummy: "Жевательная резинка",
+    Sachet: "Пакетик",
+    Infusion: "Настой",
+    Granules: "Гранулы",
+    Lozenges: "Леденцы",
+    "Nasal Drops": "Капли в нос",
+    "Oral Drops": "Пероральные капли"
+},
+viewProducts: "Посмотреть продукты",
+us: "Мы",
+contactSubtitle: "Свяжитесь с нашей командой. Мы готовы помочь — ответим на любые вопросы о фармпродукции.",
+thankYouMessage: "Спасибо за сообщение! Мы свяжемся с вами в ближайшее время.",
+namePlaceholder: "Введите полное имя",
+emailPlaceholder: "Введите адрес электронной почты",
+phonePlaceholder: "Введите номер телефона",
+messagePlaceholder: "Введите сообщение",
+getInTouch: "Свяжитесь с нами",
+getInTouchText: "Мы готовы помочь и ответить на любые ваши вопросы. Ждём вашего обращения.",
+phoneNumbers: "Главный: +91 9560797538\nОтдел продаж: +91 9560797336",
+emailAddresses: "Общие вопросы: info@isshaan.com\nПродажи: sales@isshaan.com\nПоддержка: support@pharmaex.com",
+businessHours: "Часы работы",
+businessHoursText: "Пн-Пт: 9:00 – 18:00\nСб: 9:00 – 18:00\nВс: выходной",
+find: "Найдите",
+mapSubtitle: "Посетите наш головной офис в медицинском районе.",
+  ourProductsTagline: "Откройте наш широкий ассортимент брендовых лекарств, удобно сгруппированных по категориям.",
+  allProducts: "Все продукты",
+  searchPlaceholderProducts: "Поиск по названию, составу или стране...",
+  productList: "Список продуктов",
+  matchingProducts: "найдено соответствующих продуктов",
+
+
   },
   fr: {
+      backToProducts: "Retour aux produits",
+  categoryPageSubtext: "Découvrez notre vaste gamme de produits {category} conçus pour des résultats thérapeutiques optimaux.",
+  productsAvailable: "produits disponibles",
+  noProductsFound: "Aucun produit trouvé dans cette catégorie.",
+  composition: "Composition",
+  packing: "Conditionnement",
+  registeredCountries: "Pays enregistrés",
+  viewDetails: "Voir les détails",
+  products: "Produits",
     home: "Accueil",
     about: "À propos",
-    products: "Produits",
+  
     distributors: "Distributeurs",
     contact: "Contact",
     career: "Carrière",
@@ -124,11 +352,122 @@ const translations = {
     companyOverview: "Aperçu de l'entreprise",
     leadership: "Équipe de direction",
     certifications: "Certifications et contrôle qualité",
+    bestSelling: "Meilleures ventes",
+    our: "Notre",
+manufacturingExcellence: "Excellence de fabrication",
+manufacturingText1:
+  "Chez <strong>Naxcuure&nbsp;Healthcare</strong>, nous disposons dʼune infrastructure ultramoderne certifiée <span class='font-medium text-yellow-600'>WHO-GMP, ISO</span> et <span class='font-medium text-yellow-600'>FDA</span>. Notre engagement qualité nous pousse à produire des médicaments conformes aux normes internationales.",
+manufacturingText2:
+  "De la formulation au conditionnement, chaque étape est conçue pour l’excellence, garantissant une efficacité et une fiabilité de classe mondiale.",
+visitSite: "Visiter Naxcuure.com",
+connectWithUs: "Contactez-nous",
+connect: "Contacter",
+  quickLinks: "Liens rapides",
+  contactInfo: "Contact",
+  ourProducts: "Nos produits",
+  footerDescription: "Entreprise pharmaceutique de premier plan, engagée à améliorer la santé mondiale grâce à des médicaments innovants et des solutions de soins de qualité.",
+  footerAddress: "G-94, Bloc G, Secteur 63\nNoida, Uttar Pradesh 201301",
+
+  aboutSubtitle: "Plus de 20 ans d’excellence pharmaceutique au service de la vie, à travers des solutions innovantes.",
+  companyOverviewText1: "Fondée en 2007, Isshaan est passée d'une petite entreprise pharmaceutique à un acteur mondial de confiance dans la santé.",
+  companyOverviewText2: "Avec des installations de pointe et une équipe engagée, nous repoussons les limites de la science pharmaceutique.",
+  ourCore: "Nos valeurs",
+  values: "fondamentales",
+  excellence: "Excellence",
+  excellenceText: "Nous visons l’excellence dans tous les domaines — recherche, fabrication, service.",
+  innovation: "Innovation",
+  innovationText: "Nous adoptons l'innovation pour créer des solutions pharmaceutiques de rupture.",
+  compassion: "Compassion",
+  compassionText: "Les patients sont au cœur de notre mission pour améliorer la santé.",
+  journey: "Parcours",
+  countries: "Pays",
+  timeline: {
+    2007: "Création d’Isshaan Healthcare avec une vision d’accessibilité aux médicaments de qualité.",
+    2010: "Entrée dans la région CEI avec des partenariats stratégiques.",
+    2013: "Extension à plus de 50 génériques dans les principaux segments thérapeutiques.",
+    2016: "Présence significative en Afrique avec des produits conformes à l’OMS.",
+    2019: "Lancement en Asie du Sud-Est, notamment au Cambodge.",
+    2022: "Plus de 100 produits approuvés sur plusieurs marchés.",
+    2024: "Exportateur mondial reconnu dans plus de 20 pays."
+  },
+  leadershipTeam: {
+    arvind: {
+      position: "Responsable des opérations",
+      bio: "Plus de 20 ans d’expérience dans le secteur pharmaceutique."
+    },
+    shubhaankar: {
+      position: "Équipe de direction",
+      bio: "Quelque chose de bien"
+    }
+  },
+  genericTagline: "Médicaments génériques de haute qualité pour des soins de santé efficaces et abordables.",
+searchPlaceholder: "Rechercher par nom ou composition",
+allTypes: "Tous les types",
+showing: "Affichage de",
+of: "sur",
+sno: "N°",
+type: "Type",
+product: "Produit",
+
+noProducts: "Aucun produit trouvé.",
+previous: "Précédent",
+next: "Suivant",
+page: "Page",
+category: {
+ 
+    Syrup: "Sirop",
+    Tablet: "Comprimé",
+    Injection: "Injection",
+    Suspension: "Suspension",
+    Other: "Autre",
+    Gel: "Gel",
+    Capsule: "Capsule",
+    Gummy: "Gomme",
+    Sachet: "Sachet",
+    Infusion: "Infusion",
+    Granules: "Granulés",
+    Lozenges: "Pastilles",
+    "Nasal Drops": "Gouttes nasales",
+    "Oral Drops": "Gouttes orales"
+},
+viewProducts: "Voir les produits"   ,
+us: "Nous",
+contactSubtitle: "Contactez notre équipe. Nous sommes là pour répondre à vos besoins pharmaceutiques et à toutes vos questions.",
+thankYouMessage: "Merci pour votre message ! Nous vous répondrons rapidement.",
+namePlaceholder: "Entrez votre nom complet",
+emailPlaceholder: "Entrez votre adresse e-mail",
+phonePlaceholder: "Entrez votre numéro de téléphone",
+messagePlaceholder: "Entrez votre message",
+getInTouch: "Contact",
+getInTouchText: "Nous sommes là pour vous aider et répondre à toutes vos questions. Au plaisir de vous lire.",
+phoneNumbers: "Standard : +91 9560797538\nVentes : +91 9560797336",
+emailAddresses: "Général : info@isshaan.com\nVentes : sales@isshaan.com\nSupport : support@pharmaex.com",
+businessHours: "Horaires",
+businessHoursText: "Lun-Ven : 9h00 – 18h00\nSam : 9h00 – 18h00\nDim : Fermé",
+find: "Trouvez",
+mapSubtitle: "Venez visiter notre siège, au cœur du quartier médical.",
+
+  ourProductsTagline: "Découvrez notre large gamme de produits pharmaceutiques de marque, soigneusement catégorisés pour un accès facile.",
+  allProducts: "Tous les produits",
+  searchPlaceholderProducts: "Rechercher par nom, composition ou pays...",
+  productList: "Liste des produits",
+  matchingProducts: "produits correspondants trouvés",
+
   },
   es: {
+     backToProducts: "Volver a Productos",
+  categoryPageSubtext: "Explora nuestra amplia gama de productos de {category} diseñados para resultados terapéuticos óptimos.",
+  productsAvailable: "productos disponibles",
+  noProductsFound: "No se encontraron productos en esta categoría.",
+  composition: "Composición",
+  packing: "Empaque",
+  registeredCountries: "Países registrados",
+  viewDetails: "Ver detalles",
+  products: "Productos",
+    bestSelling: "Más vendidos",
     home: "Inicio",
     about: "Acerca de",
-    products: "Productos",
+
     distributors: "Distribuidores",
     contact: "Contacto",
     career: "Carrera",
@@ -163,19 +502,136 @@ const translations = {
     companyOverview: "Resumen de la empresa",
     leadership: "Equipo de liderazgo",
     certifications: "Certificaciones y control de calidad",
+    our: "Nuestra",
+manufacturingExcellence: "Excelencia de fabricación",
+manufacturingText1:
+  "En <strong>Naxcuure&nbsp;Healthcare</strong> operamos con una infraestructura de vanguardia certificada por <span class='font-medium text-yellow-600'>WHO-GMP, ISO</span> y <span class='font-medium text-yellow-600'>FDA</span>. Nuestro compromiso con la calidad nos impulsa a producir fármacos con cumplimiento y seguridad globales.",
+manufacturingText2:
+  "Desde la formulación hasta el envasado, cada paso está diseñado para la excelencia, asegurando eficacia y fiabilidad de nivel mundial.",
+visitSite: "Visitar Naxcuure.com",
+connectWithUs: "Conéctate con nosotros",
+connect: "Conectar",
+ quickLinks: "Enlaces rápidos",
+  contactInfo: "Información de contacto",
+  ourProducts: "Nuestros productos",
+  footerDescription: "Empresa farmacéutica líder, comprometida a mejorar la salud global mediante medicamentos innovadores y soluciones sanitarias de calidad.",
+footerAddress: "G-94, Bloque G, Sector 63\nNoida, Uttar Pradesh 201301",
+
+  aboutSubtitle: "Más de 20 años de excelencia farmacéutica, mejorando vidas con soluciones sanitarias innovadoras.",
+  companyOverviewText1: "Fundada en 2007, Isshaan ha evolucionado hasta convertirse en un referente mundial de la salud.",
+  companyOverviewText2: "Con instalaciones modernas y un equipo dedicado, seguimos superando los límites de la ciencia farmacéutica.",
+  ourCore: "Nuestros",
+  values: "Valores",
+  excellence: "Excelencia",
+  excellenceText: "Nos esforzamos por la excelencia en todo, desde I+D hasta atención al cliente.",
+  innovation: "Innovación",
+  innovationText: "Adoptamos la innovación para desarrollar soluciones farmacéuticas revolucionarias.",
+  compassion: "Compasión",
+  compassionText: "El cuidado del paciente está en el centro de todo lo que hacemos.",
+  journey: "Camino",
+  countries: "Países",
+  timeline: {
+    2007: "Se fundó Isshaan Healthcare con el objetivo de ofrecer medicamentos accesibles y de alta calidad.",
+    2010: "Ingreso en la región de la CEI con alianzas estratégicas.",
+    2013: "Expansión de la línea de productos a más de 50 genéricos.",
+    2016: "Presencia significativa en África con formulaciones aprobadas por la OMS.",
+    2019: "Inicio de operaciones en el sudeste asiático, con Camboya como mercado clave.",
+    2022: "Más de 100 productos aprobados en mercados regulados.",
+    2024: "Exportador global de confianza en más de 20 países."
   },
-}
+  leadershipTeam: {
+    arvind: {
+      position: "Jefe de Operaciones",
+      bio: "Más de 20 años de experiencia en liderazgo farmacéutico."
+    },
+    shubhaankar: {
+      position: "Equipo de Dirección",
+      bio: "Algo importante"
+    }
+  },
+  genericTagline: "Medicamentos genéricos de alta calidad para una atención médica eficaz y asequible.",
+searchPlaceholder: "Buscar por nombre o composición",
+allTypes: "Todos los tipos",
+showing: "Mostrando",
+of: "de",
+sno: "N.º",
+type: "Tipo",
+product: "Producto",
+
+noProducts: "No se encontraron productos.",
+previous: "Anterior",
+next: "Siguiente",
+page: "Página",
+category: {   
+  
+    Syrup: "Jarabe",
+    Tablet: "Tableta",
+    Injection: "Inyección",
+    Suspension: "Suspensión",
+    Other: "Otro",
+    Gel: "Gel",
+    Capsule: "Cápsula",
+    Gummy: "Gomita",
+    Sachet: "Sobre",
+    Infusion: "Infusión",
+    Granules: "Gránulos",
+    Lozenges: "Pastillas",
+    "Nasal Drops": "Gotas nasales",
+    "Oral Drops": "Gotas orales"
+  }
+},
+viewProducts: "Ver productos" ,
+us: "Nosotros",
+contactSubtitle: "Ponte en contacto con nuestro equipo. Estamos aquí para ayudarte con tus necesidades farmacéuticas y responder a cualquier pregunta.",
+thankYouMessage: "¡Gracias por tu mensaje! Nos pondremos en contacto pronto.",
+namePlaceholder: "Ingresa tu nombre completo",
+emailPlaceholder: "Ingresa tu correo electrónico",
+phonePlaceholder: "Ingresa tu número de teléfono",
+messagePlaceholder: "Ingresa tu mensaje",
+getInTouch: "Contacto",
+getInTouchText: "Estamos para ayudarte y responder cualquier duda que tengas. Esperamos tu mensaje.",
+phoneNumbers: "Central: +91 9560797538\nVentas: +91 9560797336",
+emailAddresses: "General: info@isshaan.com\nVentas: sales@isshaan.com\nSoporte: support@pharmaex.com",
+businessHours: "Horario",
+businessHoursText: "Lunes-Viernes: 9:00 – 18:00\nSábado: 9:00 – 18:00\nDomingo: Cerrado",
+find: "Encuéntranos",
+mapSubtitle: "Visita nuestra sede en el corazón del distrito médico.",
+ ourProductsTagline: "Descubre nuestra amplia gama de productos farmacéuticos de marca, categorizados para un acceso fácil.",
+  allProducts: "Todos los productos",
+  searchPlaceholderProducts: "Buscar por nombre, composición o país...",
+  productList: "Lista de productos",
+  matchingProducts: "productos encontrados",
+  viewDetails: "Ver detalles"
+
+
+
+  }
+
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>("en")
 
-  const t = (key: string): string => {
-    return translations[language][key as keyof (typeof translations)["en"]] || key
-  }
+  const t = useCallback((key: string): string => {
+    const keys = key.split('.');
+    let result: any = translations[language];
+    for (const k of keys) {
+      result = result[k as keyof typeof result];
+      if (!result) {
+        return key;
+      }
+    }
+    return result || key;
+  }, [language]);
 
-  return <LanguageContext.Provider value={{ language, setLanguage, t }}>{children}</LanguageContext.Provider>
+  const contextValue = useMemo(() => ({
+    language,
+    setLanguage,
+    t
+  }), [language, t]);
+
+  return <LanguageContext.Provider value={contextValue}>{children}</LanguageContext.Provider>
 }
 
 export function useLanguage() {

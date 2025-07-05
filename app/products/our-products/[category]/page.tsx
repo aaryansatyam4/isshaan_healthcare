@@ -1,165 +1,160 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { useParams, useRouter } from "next/navigation"
-import { motion } from "framer-motion"
-import { ArrowLeft, Package, MapPin, Calendar, CheckCircle } from "lucide-react"
-import { useLanguage } from "@/contexts/LanguageContext"
-import { commerciallyAvailableProducts } from "@/data/commerciallyAvailableProducts"
+import Link from "next/link";
+import { useRouter, useParams } from "next/navigation";
+import { motion } from "framer-motion";
+import {
+  ArrowLeft,
+  Package,
+  MapPin,
+  Calendar,
+  CheckCircle,
+} from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+
+/* data sets */
+import { commerciallyAvailableProducts as enData } from "@/data/commerciallyAvailableProducts_en";
+import { commerciallyAvailableProducts as ruData } from "@/data/commerciallyAvailableProducts_ru";
+import { commerciallyAvailableProducts as frData } from "@/data/commerciallyAvailableProducts_fr";
+import { commerciallyAvailableProducts as esData } from "@/data/commerciallyAvailableProducts_es";
 
 export default function CategoryProducts() {
-  const router = useRouter()
-  const params = useParams()
-  const { category } = params
-  const { t } = useLanguage()
+  const router = useRouter();
+  const { category } = useParams<{ category: string }>();
+  const { t, language } = useLanguage();
 
-  const categoryName = typeof category === "string" ? category.charAt(0).toUpperCase() + category.slice(1) : ""
+  /* choose dataset by language */
+  const dataMap = { en: enData, ru: ruData, fr: frData, es: esData } as const;
+  const products = dataMap[language];
 
-  const categoryProducts = commerciallyAvailableProducts.filter(
-    (product) => product.type.toLowerCase() === (category as string)?.toLowerCase()
-  )
+  /* prepare readable category */
+  const categoryName = category ?? "";
+  const capCat = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
+  const catLabel = t(`category.${capCat}`) || capCat;
 
+  const categoryProducts = products.filter(
+    (p) => p.type.toLowerCase() === categoryName.toLowerCase()
+  );
+
+  /* framer presets */
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.6 },
-  }
-
-  const staggerContainer = {
-    animate: {
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  }
+  };
+  const stagger = { animate: { transition: { staggerChildren: 0.1 } } };
 
   return (
-    <div className="pt-16">
-      {/* Header */}
-      <section className="py-8 bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => router.back()}
-              className="flex items-center space-x-2 text-gray-600 hover:text-yellow-600 transition-colors duration-200"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              <span>Back to Our Products</span>
-            </button>
-            <div className="text-gray-400">/</div>
-            <span className="text-gray-900 font-semibold">{categoryName}</span>
+    <div className="pt-4">
+      {/* breadcrumb */}
+      <section className="py-8 bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 flex items-center space-x-4">
+          <button
+            onClick={() => router.back()}
+            className="flex items-center space-x-2 text-gray-600 hover:text-yellow-600"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span>{t("backToProducts")}</span>
+          </button>
+          <span className="text-gray-400">/</span>
+          <span className="font-semibold text-gray-900">{catLabel}</span>
+        </div>
+      </section>
+
+      {/* hero */}
+      <section className="py-20 bg-gradient-to-br from-yellow-50 via-white to-yellow-100 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-yellow-200 rounded-full opacity-20 animate-pulse" />
+          <div className="absolute bottom-20 right-20 w-24 h-24 bg-yellow-300 rounded-full opacity-25 animate-pulse delay-1000" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-4xl md:text-6xl font-bold text-gray-900 space-x-2"
+          >
+            <span className="bg-gradient-to-r from-yellow-500 to-yellow-600 bg-clip-text text-transparent">
+              {catLabel}
+            </span>
+            <span>{t("products")}</span>
+          </motion.h1>
+
+          <p className="mt-6 text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto">
+            {t("categoryPageSubtext").replace("{category}", catLabel.toLowerCase())}
+          </p>
+
+          <div className="mt-4 flex items-center justify-center space-x-3 text-lg">
+            <Package className="w-6 h-6 text-yellow-500" />
+            <span className="font-semibold text-gray-700">
+              {categoryProducts.length} {t("productsAvailable")}
+            </span>
           </div>
         </div>
       </section>
 
-      {/* Hero */}
-      <section className="py-20 bg-gradient-to-br from-yellow-50 via-white to-yellow-100 relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-yellow-200 rounded-full opacity-20 animate-pulse"></div>
-          <div className="absolute bottom-20 right-20 w-24 h-24 bg-yellow-300 rounded-full opacity-25 animate-pulse delay-1000"></div>
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center space-y-8"
-          >
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900">
-              <span className="bg-gradient-to-r from-yellow-500 to-yellow-600 bg-clip-text text-transparent">
-                {categoryName}
-              </span>{" "}
-              Products
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-              Explore our comprehensive range of {categoryName?.toLowerCase()} products designed for optimal therapeutic
-              outcomes.
-            </p>
-            <div className="flex items-center justify-center space-x-4 text-lg">
-              <Package className="w-6 h-6 text-yellow-500" />
-              <span className="font-semibold text-gray-700">{categoryProducts.length} Products Available</span>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Product Grid */}
+      {/* grid */}
       <section className="py-12 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4">
           <motion.div
-            variants={staggerContainer}
+            variants={stagger}
             initial="initial"
             animate="animate"
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {categoryProducts.map((product) => (
+            {categoryProducts.map((p) => (
               <motion.div
-                key={product.id}
+                key={p.id}
                 variants={fadeInUp}
-                className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden"
+                className="bg-white rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 overflow-hidden"
               >
                 <div className="relative">
                   <img
-                    src={product.image || "/placeholder.svg"}
-                    alt={product.name}
+                    src={p.image || "/placeholder.svg"}
+                    alt={p.name}
                     className="w-full h-48 object-cover"
                     onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
                   />
-                  <div className="absolute top-4 right-4">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        product.status === "Registered"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-yellow-100 text-yellow-800"
-                      }`}
-                    >
-                      {product.status}
-                    </span>
-                  </div>
-                  <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 bg-yellow-500 text-white rounded-full text-xs font-semibold">
-                      {product.type}
-                    </span>
-                  </div>
+                  <Badge side="right" status={p.status} />
+                  <span className="absolute top-4 left-4 px-3 py-1 bg-yellow-500 text-white rounded-full text-xs font-semibold">
+                    {t(`category.${p.type}`)}
+                  </span>
                 </div>
 
                 <div className="p-6 space-y-4">
-                  <h3 className="text-xl font-bold text-gray-900">{product.name}</h3>
+                  <h3 className="text-xl font-bold">{p.name}</h3>
 
-                  <div className="space-y-2">
-                    <p className="text-sm text-gray-600">
-                      <span className="font-semibold">Composition:</span> {product.composition.substring(0, 80)}...
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      <span className="font-semibold">Packing:</span> {product.packing}
-                    </p>
-                  </div>
+                  <Info label={t("composition")} text={p.composition} />
+                  <Info label={t("packing")} text={p.packing} />
 
                   <div className="flex items-center space-x-4 text-sm text-gray-600">
-                    <div className="flex items-center">
-                      <Calendar className="w-4 h-4 mr-1 text-yellow-500" />
-                      {product.shelfLife}
-                    </div>
-                    <div className="flex items-center">
-                      <CheckCircle className="w-4 h-4 mr-1 text-green-500" />
-                      {product.status}
-                    </div>
+                    <Calendar className="w-4 h-4 text-yellow-500" />
+                    {p.shelfLife}
+                    <CheckCircle className="w-4 h-4 ml-4 text-green-500" />
+                    {p.status}
                   </div>
 
-                  <div className="pt-4 border-t border-gray-100">
+                  <div className="pt-4 border-t">
                     <div className="flex items-start space-x-2 mb-4">
-                      <MapPin className="w-4 h-4 mt-0.5 text-yellow-500 flex-shrink-0" />
+                      <MapPin className="w-4 h-4 mt-0.5 text-yellow-500" />
                       <div>
-                        <p className="text-sm font-semibold text-gray-900">Registered Countries:</p>
-                        <p className="text-sm text-gray-600">{product.registeredCountries}</p>
+                        <p className="text-sm font-semibold">
+                          {t("registeredCountries")}:
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          {p.registeredCountries}
+                        </p>
                       </div>
                     </div>
+
                     <Link
-                      href={`/products/our-products/${product.type.toLowerCase()}/${product.name.toLowerCase().replace(/\s+/g, "-")}`}
-                      className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-2 px-4 rounded-lg font-semibold text-center block hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300"
+                      href={`/products/our-products/${p.type.toLowerCase()}/${p.name
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")}`}
+                      className="block w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-2 rounded-lg text-center font-semibold hover:from-yellow-600 hover:to-yellow-700"
                     >
-                      View Details
+                      {t("viewDetails")}
                     </Link>
                   </div>
                 </div>
@@ -170,11 +165,31 @@ export default function CategoryProducts() {
           {categoryProducts.length === 0 && (
             <div className="text-center py-12">
               <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500 text-lg">No products found in this category.</p>
+              <p className="text-gray-500 text-lg">{t("noProductsFound")}</p>
             </div>
           )}
         </div>
       </section>
     </div>
-  )
+  );
 }
+
+/* helpers */
+const Info: React.FC<{ label: string; text: string }> = ({ label, text }) => (
+  <p className="text-sm text-gray-600">
+    <span className="font-semibold">{label}:</span>{" "}
+    {text.length > 80 ? `${text.slice(0, 80)}…` : text}
+  </p>
+);
+
+const Badge: React.FC<{ side: "right"; status: string }> = ({ side, status }) => (
+  <span
+    className={`absolute top-4 ${side}-4 px-3 py-1 rounded-full text-xs font-semibold ${
+      status === "Registered"
+        ? "bg-green-100 text-green-800"
+        : "bg-yellow-100 text-yellow-800"
+    }`}
+  >
+    {status}
+  </span>
+);

@@ -1,12 +1,15 @@
 "use client";
 
-import { ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";   // ⬅️ NEW
 
 export default function OurManufacturing() {
+  const { t } = useLanguage();                              // ⬅️ NEW
+
   return (
     <section className="relative py-20 bg-gradient-to-br from-yellow-50 via-white to-yellow-100 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-yellow-100 via-white to-transparent opacity-20 pointer-events-none" />
-      
+
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         {/* Image */}
         <div className="overflow-hidden rounded-2xl shadow-xl group">
@@ -19,23 +22,21 @@ export default function OurManufacturing() {
 
         {/* Text */}
         <div>
+          {/* 🔤 Translated heading */}
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
-            Our{" "}
+            {t("our")}{" "}
             <span className="bg-gradient-to-r from-yellow-500 to-yellow-600 bg-clip-text text-transparent">
-              Manufacturing Excellence
+              {t("manufacturingExcellence")}
             </span>
           </h2>
 
-          <p className="text-lg text-gray-700 mb-4 leading-relaxed">
-            At <strong>Naxcuure Healthcare</strong>, we operate with state-of-the-art infrastructure certified under
-            <span className="font-medium text-yellow-600"> WHO-GMP, ISO</span> and{" "}
-            <span className="font-medium text-yellow-600">FDA</span> standards. Our commitment to quality drives us to
-            produce pharmaceuticals with global compliance and safety.
-          </p>
-
+          {/* 🔤 Translated paragraphs (HTML allowed) */}
+          <p
+            className="text-lg text-gray-700 mb-4 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: t("manufacturingText1") }}
+          />
           <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-            From formulation to packaging, every step is engineered for excellence, ensuring world-class efficacy and
-            reliability.
+            {t("manufacturingText2")}
           </p>
 
           <a
@@ -44,11 +45,11 @@ export default function OurManufacturing() {
             rel="noopener noreferrer"
             className="inline-flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-full text-lg font-semibold shadow-lg transition-all duration-300"
           >
-            Visit Naxcuure.com
+            {t("visitSite")}
             <ArrowRight className="ml-2 w-5 h-5" />
           </a>
         </div>
       </div>
     </section>
-  )
+  );
 }

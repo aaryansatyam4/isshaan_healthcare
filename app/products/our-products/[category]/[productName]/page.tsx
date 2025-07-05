@@ -17,25 +17,46 @@ import {
   Info,
 } from "lucide-react"
 import { useLanguage } from "@/contexts/LanguageContext"
-import { commerciallyAvailableProducts } from "@/data/commerciallyAvailableProducts"
+import { commerciallyAvailableProducts as commerciallyAvailableProducts_en } from "@/data/commerciallyAvailableProducts_en"
+import { commerciallyAvailableProducts as commerciallyAvailableProducts_ru } from "@/data/commerciallyAvailableProducts_ru"
+import { commerciallyAvailableProducts as commerciallyAvailableProducts_fr } from "@/data/commerciallyAvailableProducts_fr"
+import { commerciallyAvailableProducts as commerciallyAvailableProducts_es } from "@/data/commerciallyAvailableProducts_es"
 
 interface PageProps {
   params: {
-    category: string
-    productName: string
+    category: string;
+    productName: string;
   }
 }
 
 export default function ProductDetail({ params }: PageProps) {
   const router = useRouter()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const { category, productName } = params
 
-  const product = commerciallyAvailableProducts.find(
-    (p) =>
-      p.type.toLowerCase() === category?.toLowerCase() &&
-      p.name.toLowerCase().replace(/\s+/g, "-") === productName?.toLowerCase()
-  )
+  const productDataByLanguage = {
+    en: commerciallyAvailableProducts_en,
+    ru: commerciallyAvailableProducts_ru,
+    fr: commerciallyAvailableProducts_fr,
+    es: commerciallyAvailableProducts_es,
+  };
+  
+  const selectedProducts = productDataByLanguage[language];
+  const product = selectedProducts.find(
+    (p) => {
+      const normalizedCategory = (category || 'default-category').toLowerCase();
+      const normalizedProductName = (productName || 'default-product').toLowerCase().replace(/\s+/g, "-");
+      return (
+        p.type.toLowerCase() === normalizedCategory &&
+        p.name.toLowerCase().replace(/\s+/g, "-") === normalizedProductName
+      );
+    }
+  ) || selectedProducts.find(
+    (p) => {
+      const normalizedCategory = (category || 'default-category').toLowerCase();
+      return p.type.toLowerCase() === normalizedCategory;
+    }
+  );
 
   if (!product) {
     return (
@@ -68,7 +89,7 @@ export default function ProductDetail({ params }: PageProps) {
   }
 
   return (
-    <div className="pt-16 bg-gray-50 min-h-screen">
+    <div className="pt-4 bg-gray-50 min-h-screen">
       {/* Breadcrumb */}
       <section className="py-8 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -89,10 +110,10 @@ export default function ProductDetail({ params }: PageProps) {
             </Link>
             <div className="text-gray-400">/</div>
             <Link
-              href={`/products/our-products/${category}`}
+              href={`/products/our-products/${category || 'category'}`}
               className="text-gray-600 hover:text-yellow-600 transition-colors duration-200"
             >
-              {category?.charAt(0).toUpperCase() + category?.slice(1)}
+              {(category || 'Category').charAt(0).toUpperCase() + (category || 'category').slice(1)}
             </Link>
             <div className="text-gray-400">/</div>
             <span className="text-gray-900 font-semibold">{product.name}</span>
@@ -175,10 +196,10 @@ export default function ProductDetail({ params }: PageProps) {
             viewport={{ once: true }}
             className="grid grid-cols-1 lg:grid-cols-2 gap-8"
           >
-            <InfoBlock title="Benefits" icon={CheckCircle} iconColor="text-green-500" items={product.benefits} />
-            <InfoBlock title="Indications" icon={Shield} iconColor="text-blue-500" items={product.indications} />
-            <InfoBlock title="Usage Instructions" icon={Info} iconColor="text-yellow-500" items={product.usageInstructions} />
-            <InfoBlock title="Storage Instructions" icon={Thermometer} iconColor="text-purple-500" items={product.storage} />
+            <InfoBlock title="Benefits" icon={CheckCircle} iconColor="text-green-500" items={product.benefits as string[]} />
+            <InfoBlock title="Indications" icon={Shield} iconColor="text-blue-500" items={product.indications as string[]} />
+            <InfoBlock title="Usage Instructions" icon={Info} iconColor="text-yellow-500" items={product.usageInstructions as string[]} />
+            <InfoBlock title="Storage Instructions" icon={Thermometer} iconColor="text-purple-500" items={product.storage as string[]} />
           </motion.div>
 
           <motion.div
@@ -207,7 +228,7 @@ export default function ProductDetail({ params }: PageProps) {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {commerciallyAvailableProducts
+            {selectedProducts
               .filter((p) => p.id !== product.id && p.type === product.type)
               .slice(0, 3)
               .map((relatedProduct) => (
