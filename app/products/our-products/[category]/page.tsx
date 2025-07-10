@@ -45,7 +45,7 @@ export default function CategoryProducts() {
   const stagger = { animate: { transition: { staggerChildren: 0.1 } } };
 
   return (
-    <div className="pt-4">
+    <div className="pt-28">
       {/* breadcrumb */}
       <section className="py-8 bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 flex items-center space-x-4">

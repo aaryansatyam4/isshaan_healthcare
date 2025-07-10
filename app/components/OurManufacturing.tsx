@@ -39,15 +39,7 @@ export default function OurManufacturing() {
             {t("manufacturingText2")}
           </p>
 
-          <a
-            href="https://naxcuure.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-full text-lg font-semibold shadow-lg transition-all duration-300"
-          >
-            {t("visitSite")}
-            <ArrowRight className="ml-2 w-5 h-5" />
-          </a>
+     
         </div>
       </div>
     </section>

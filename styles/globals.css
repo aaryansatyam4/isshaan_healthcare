@@ -90,5 +90,6 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    margin-top: 100px;
   }
 }

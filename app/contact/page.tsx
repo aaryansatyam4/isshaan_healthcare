@@ -1,33 +1,14 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useForm, ValidationError } from "@formspree/react";
 
 export default function Contact() {
   const { t } = useLanguage();
-
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-    setFormData({ name: "", email: "", phone: "", message: "" });
-    alert(t("thankYouMessage"));
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const [state, handleSubmit] = useForm("mvgreoyv");
 
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
@@ -35,8 +16,30 @@ export default function Contact() {
     transition: { duration: 0.6 },
   };
 
+  if (state.succeeded) {
+    return (
+        <div className="pt-28">
+            {/* Hero Section */}
+            <section className="py-20 bg-gradient-to-br from-yellow-50 via-white to-yellow-100">
+                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="bg-white inline-block p-8 rounded-2xl shadow-lg"
+                    >
+                        <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                        <h1 className="text-3xl font-bold text-gray-900 mb-2">{t("thankYouMessage")}</h1>
+                        <p className="text-gray-600">We'll be in touch with you shortly.</p>
+                    </motion.div>
+                </div>
+            </section>
+        </div>
+    );
+  }
+
   return (
-    <div className="pt-16">
+    <div className="pt-28">
       {/* ───────── Hero ───────── */}
       <section className="py-20 bg-gradient-to-br from-yellow-50 via-white to-yellow-100 relative overflow-hidden">
         <div className="absolute inset-0">
@@ -93,11 +96,10 @@ export default function Contact() {
                     id="name"
                     name="name"
                     required
-                    value={formData.name}
-                    onChange={handleChange}
                     placeholder={t("namePlaceholder")}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none"
                   />
+                   <ValidationError prefix="Name" field="name" errors={state.errors} className="text-red-600 text-sm mt-1" />
                 </div>
 
                 {/* Email */}
@@ -113,11 +115,10 @@ export default function Contact() {
                     name="email"
                     type="email"
                     required
-                    value={formData.email}
-                    onChange={handleChange}
                     placeholder={t("emailPlaceholder")}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none"
                   />
+                  <ValidationError prefix="Email" field="email" errors={state.errors} className="text-red-600 text-sm mt-1" />
                 </div>
 
                 {/* Phone */}
@@ -132,11 +133,10 @@ export default function Contact() {
                     id="phone"
                     name="phone"
                     type="tel"
-                    value={formData.phone}
-                    onChange={handleChange}
                     placeholder={t("phonePlaceholder")}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none"
                   />
+                   <ValidationError prefix="Phone" field="phone" errors={state.errors} className="text-red-600 text-sm mt-1" />
                 </div>
 
                 {/* Message */}
@@ -152,19 +152,19 @@ export default function Contact() {
                     name="message"
                     rows={6}
                     required
-                    value={formData.message}
-                    onChange={handleChange}
                     placeholder={t("messagePlaceholder")}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none resize-none"
                   />
+                  <ValidationError prefix="Message" field="message" errors={state.errors} className="text-red-600 text-sm mt-1" />
                 </div>
 
                 {/* Submit */}
                 <motion.button
                   type="submit"
+                  disabled={state.submitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-yellow-600 hover:to-yellow-700 transition-all shadow-lg flex items-center justify-center space-x-2"
+                  className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-yellow-600 hover:to-yellow-700 transition-all shadow-lg flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send className="w-5 h-5" />
                   <span>{t("submit")}</span>
@@ -189,19 +189,10 @@ export default function Contact() {
                 </p>
               </div>
 
-              {/* Address */}
-              <motion.div {...fadeInUp} className="info-card">
-                <IconWrapper>
-                  <MapPin className="w-6 h-6 text-white" />
-                </IconWrapper>
-                <CardContent
-                  heading={t("address")}
-                  text={t("footerAddress")}
-                />
-              </motion.div>
+         
 
               {/* Phone */}
-              <motion.div {...fadeInUp} className="info-card">
+              <motion.div variants={fadeInUp} className="info-card flex items-start space-x-6">
                 <IconWrapper>
                   <Phone className="w-6 h-6 text-white" />
                 </IconWrapper>
@@ -212,7 +203,7 @@ export default function Contact() {
               </motion.div>
 
               {/* Email */}
-              <motion.div {...fadeInUp} className="info-card">
+              <motion.div variants={fadeInUp} className="info-card flex items-start space-x-6">
                 <IconWrapper>
                   <Mail className="w-6 h-6 text-white" />
                 </IconWrapper>
@@ -223,7 +214,7 @@ export default function Contact() {
               </motion.div>
 
               {/* Hours */}
-              <motion.div {...fadeInUp} className="info-card">
+              <motion.div variants={fadeInUp} className="info-card flex items-start space-x-6">
                 <IconWrapper>
                   <Clock className="w-6 h-6 text-white" />
                 </IconWrapper>
@@ -238,7 +229,7 @@ export default function Contact() {
       </section>
 
       {/* ───────── Map ───────── */}
-      <section className="py-20 bg-gray-50">
+      {/* <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -275,7 +266,7 @@ export default function Contact() {
             />
           </motion.div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }
@@ -296,10 +287,3 @@ const CardContent: React.FC<{ heading: string; text: string }> = ({
     <p className="text-gray-600 whitespace-pre-line">{text}</p>
   </div>
 );
-
-/* ---------- shared styles ---------- */
-const fadeInUp = {
-  initial: { opacity: 0, y: 60 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 },
-};

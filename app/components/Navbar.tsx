@@ -15,30 +15,27 @@ export default function Navbar() {
   const { language, setLanguage, t } = useLanguage();
   const pathname = usePathname();
 
-  /* header shadow on scroll */
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* nav items */
   const navItems = [
-    { name: t("home"),    path: "/" },
-    { name: t("about"),   path: "/about" },
+    { name: t("home"), path: "/" },
+    { name: t("about"), path: "/about" },
     {
       name: t("products"),
       path: "/products",
       hasDropdown: true,
       dropdownItems: [
         { name: t("genericProducts"), path: "/products/generic" },
-        { name: t("ourProducts"),     path: "/products/our-products" },  // 🔤
+        { name: t("ourProducts"), path: "/products/our-products" },
       ],
     },
     { name: t("contact"), path: "/contact" },
   ];
 
-  /* language list */
   const languages = [
     { code: "en", name: "English" },
     { code: "ru", name: "Русский" },
@@ -57,11 +54,11 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <img src="/logo.png" alt="Isshaan Healthcare Logo" className="w-24 h-12 object-contain" />
+          <Link href="/" className="flex items-center space-x-3">
+            <img src="/logo.png" alt="Isshaan Healthcare Logo" className="w-36 h-20 object-contain" />
           </Link>
 
-          {/* ───── Desktop nav ───── */}
+          {/* Desktop nav */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <div key={item.path} className="relative">
@@ -71,9 +68,9 @@ export default function Navbar() {
                     onMouseLeave={() => setShowProductsDropdown(false)}
                   >
                     <button
-                      className={`px-3 py-2 text-sm font-medium flex items-center space-x-1 transition-colors ${
+                      className={`px-3 py-2 text-base font-normal flex items-center space-x-1 transition-colors ${
                         pathname.startsWith("/products")
-                          ? "text-yellow-600"
+                          ? "text-yellow-600 font-semibold"
                           : "text-gray-700 hover:text-yellow-600"
                       }`}
                     >
@@ -87,16 +84,16 @@ export default function Navbar() {
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
-                          className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border py-2"
+                          className="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border py-2 z-50"
                         >
                           {item.dropdownItems?.map((d) => (
                             <Link
                               key={d.path}
                               href={d.path}
-                              className={`block px-4 py-2 text-sm transition-colors ${
+                              className={`block px-4 py-2 text-base transition-colors ${
                                 pathname === d.path
-                                  ? "text-yellow-600 bg-yellow-50"
-                                  : "text-gray-700 hover:bg-yellow-50"
+                                  ? "text-yellow-600 bg-yellow-50 font-semibold"
+                                  : "text-gray-700 hover:bg-yellow-50 font-normal"
                               }`}
                             >
                               {d.name}
@@ -109,8 +106,10 @@ export default function Navbar() {
                 ) : (
                   <Link
                     href={item.path}
-                    className={`relative px-3 py-2 text-sm font-medium transition-colors ${
-                      pathname === item.path ? "text-yellow-600" : "text-gray-700 hover:text-yellow-600"
+                    className={`relative px-3 py-2 text-base transition-colors ${
+                      pathname === item.path
+                        ? "text-yellow-600 font-semibold"
+                        : "text-gray-700 hover:text-yellow-600 font-normal"
                     }`}
                   >
                     {item.name}
@@ -126,13 +125,13 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* ───── Lang switch + mobile icon ───── */}
+          {/* Language switcher + mobile icon */}
           <div className="flex items-center space-x-4">
-            {/* Language switcher */}
+            {/* Language */}
             <div className="relative">
               <button
                 onClick={() => setShowLanguages((s) => !s)}
-                className="flex items-center space-x-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-yellow-600"
+                className="flex items-center space-x-1 px-3 py-2 text-base font-normal text-gray-700 hover:text-yellow-600 transition-colors"
               >
                 <span className="hidden sm:inline">{languages.find((l) => l.code === language)?.name}</span>
                 <ChevronDown className="w-4 h-4" />
@@ -144,7 +143,7 @@ export default function Navbar() {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border py-2"
+                    className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border py-2 z-50"
                   >
                     {languages.map((lang) => (
                       <button
@@ -153,8 +152,10 @@ export default function Navbar() {
                           setLanguage(lang.code as any);
                           setShowLanguages(false);
                         }}
-                        className={`w-full text-left px-4 py-2 text-sm hover:bg-yellow-50 ${
-                          language === lang.code ? "text-yellow-600 bg-yellow-50" : "text-gray-700"
+                        className={`w-full text-left px-4 py-2 text-base hover:bg-yellow-50 transition-colors ${
+                          language === lang.code
+                            ? "text-yellow-600 bg-yellow-50 font-semibold"
+                            : "text-gray-700 font-normal"
                         }`}
                       >
                         {lang.name}
@@ -165,14 +166,14 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
 
-            {/* mobile burger */}
+            {/* Mobile burger */}
             <button onClick={() => setIsOpen(!isOpen)} className="md:hidden p-2 text-gray-700 hover:text-yellow-600">
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
 
-        {/* ───── Mobile Nav ───── */}
+        {/* Mobile Nav */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -186,16 +187,16 @@ export default function Navbar() {
                   <div key={item.path}>
                     {item.hasDropdown ? (
                       <>
-                        <div className="px-3 py-2 text-sm font-medium text-gray-700">{item.name}</div>
+                        <div className="px-3 py-2 text-base font-normal text-gray-700">{item.name}</div>
                         {item.dropdownItems?.map((d) => (
                           <Link
                             key={d.path}
                             href={d.path}
                             onClick={() => setIsOpen(false)}
-                            className={`block px-6 py-2 text-sm rounded-lg ${
+                            className={`block px-6 py-2 text-base rounded-lg ${
                               pathname === d.path
-                                ? "text-yellow-600 bg-yellow-50"
-                                : "text-gray-600 hover:text-yellow-600 hover:bg-yellow-50"
+                                ? "text-yellow-600 bg-yellow-50 font-semibold"
+                                : "text-gray-600 hover:text-yellow-600 hover:bg-yellow-50 font-normal"
                             }`}
                           >
                             {d.name}
@@ -206,10 +207,10 @@ export default function Navbar() {
                       <Link
                         href={item.path}
                         onClick={() => setIsOpen(false)}
-                        className={`px-3 py-2 text-sm font-medium rounded-lg ${
+                        className={`px-3 py-2 text-base rounded-lg ${
                           pathname === item.path
-                            ? "text-yellow-600 bg-yellow-50"
-                            : "text-gray-700 hover:text-yellow-600 hover:bg-yellow-50"
+                            ? "text-yellow-600 bg-yellow-50 font-semibold"
+                            : "text-gray-700 hover:text-yellow-600 hover:bg-yellow-50 font-normal"
                         }`}
                       >
                         {item.name}

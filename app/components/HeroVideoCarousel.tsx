@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 
-const videoSources = ["/hero1.mp4", "/hero2.mp4", "/hero3.mp4"]
+const videoSources = ["/hero1.mp4","/run.mp4","/hero2.mp4", "/hero3.mp4"]
 
 export default function HeroVideoCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -33,7 +33,7 @@ export default function HeroVideoCarousel() {
       ))}
 
       {/* Stronger Yellow Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-yellow-100 via-yellow-100 to-yellow-300 opacity-80 z-10"></div>
+      {/* <div className="absolute inset-0 bg-gradient-to-br from-yellow-100 via-yellow-100 to-yellow-300 opacity-80 z-10"></div> */}
     </div>
   )
 }

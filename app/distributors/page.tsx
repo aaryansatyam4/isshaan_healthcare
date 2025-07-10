@@ -54,7 +54,7 @@ export default function Distributors() {
   ]
 
   return (
-    <div className="pt-16">
+    <div className="pt-28">
       {/* Hero Section */}
       <section className="py-20 bg-gradient-to-br from-yellow-50 via-white to-yellow-100 relative overflow-hidden">
         <div className="absolute inset-0">

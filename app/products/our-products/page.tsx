@@ -63,7 +63,7 @@ export default function OurProducts() {
   const stagger = { animate: { transition: { staggerChildren: 0.1 } } };
 
   return (
-    <div className="pt-4">
+    <div className="pt-28">
       {/* ───────── Hero ───────── */}
       <section className="py-20 bg-gradient-to-br from-yellow-50 via-white to-yellow-100 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">

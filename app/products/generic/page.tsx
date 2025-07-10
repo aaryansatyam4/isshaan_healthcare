@@ -160,7 +160,7 @@ export default function GenericProducts() {
   const totalPages = Math.ceil(totalItems.length / itemsPerPage);
 
   return (
-    <div className="pt-16">
+    <div className="pt-28">
       {/* ---------- Hero ---------- */}
       <section className="py-20 bg-gradient-to-br from-yellow-50 via-white to-yellow-100 relative overflow-hidden">
         <div className="relative z-10 max-w-7xl mx-auto px-4">

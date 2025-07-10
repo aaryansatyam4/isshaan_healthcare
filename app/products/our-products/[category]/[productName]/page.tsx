@@ -1,5 +1,7 @@
+
 "use client"
 
+import { use } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { motion } from "framer-motion"
@@ -32,7 +34,10 @@ interface PageProps {
 export default function ProductDetail({ params }: PageProps) {
   const router = useRouter()
   const { t, language } = useLanguage()
-  const { category, productName } = params
+
+  // Correctly unwrap the params promise
+  const unwrappedParams = use(params)
+  const { category, productName } = unwrappedParams
 
   const productDataByLanguage = {
     en: commerciallyAvailableProducts_en,
@@ -89,7 +94,7 @@ export default function ProductDetail({ params }: PageProps) {
   }
 
   return (
-    <div className="pt-4 bg-gray-50 min-h-screen">
+    <div className="pt-28 bg-gray-50 min-h-screen">
       {/* Breadcrumb */}
       <section className="py-8 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -138,13 +143,7 @@ export default function ProductDetail({ params }: PageProps) {
                   alt={product.name}
                   className="w-full h-96 object-contain rounded-lg"
                 />
-                <div className="absolute top-4 right-4">
-                  <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                    product.status === "Registered" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"
-                  }`}>
-                    {product.status}
-                  </span>
-                </div>
+              
                 <div className="absolute top-4 left-4">
                   <span className="px-3 py-1 bg-yellow-500 text-white rounded-full text-sm font-semibold">
                     {product.type}
@@ -167,8 +166,7 @@ export default function ProductDetail({ params }: PageProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <InfoCard icon={Package} title="Packing" value={product.packing} />
                 <InfoCard icon={Calendar} title="Shelf Life" value={product.shelfLife} />
-                <InfoCard icon={CheckCircle} title="Status" value={product.status} />
-                <InfoCard icon={MapPin} title="Countries" value={product.registeredCountries} />
+               
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-lg">
@@ -196,9 +194,9 @@ export default function ProductDetail({ params }: PageProps) {
             viewport={{ once: true }}
             className="grid grid-cols-1 lg:grid-cols-2 gap-8"
           >
-            <InfoBlock title="Benefits" icon={CheckCircle} iconColor="text-green-500" items={product.benefits as string[]} />
-            <InfoBlock title="Indications" icon={Shield} iconColor="text-blue-500" items={product.indications as string[]} />
-            <InfoBlock title="Usage Instructions" icon={Info} iconColor="text-yellow-500" items={product.usageInstructions as string[]} />
+            <InfoBlock title="Benefits" icon={CheckCircle} iconColor="text-green-500" items={(product.benefits || []) as string[]} />
+            <InfoBlock title="Indications" icon={Shield} iconColor="text-blue-500" items={(product.indications || []) as string[]} />
+            <InfoBlock title="Usage Instructions" icon={Info} iconColor="text-yellow-500" items={(product.usageInstructions || []) as string[]} />
             <InfoBlock title="Storage Instructions" icon={Thermometer} iconColor="text-purple-500" items={product.storage as string[]} />
           </motion.div>
 
@@ -268,7 +266,7 @@ function InfoCard({ icon: Icon, title, value }: { icon: any; title: string; valu
   )
 }
 
-function DosageCard({ icon: Icon, title, value }: { icon: any; title: string; value: string }) {
+function DosageCard({ icon: Icon, title, value }: { icon: any; title:string; value: string }) {
   return (
     <div className="flex items-start space-x-3">
       <Icon className="w-5 h-5 text-yellow-500 mt-0.5" />
