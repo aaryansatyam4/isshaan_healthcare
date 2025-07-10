@@ -169,16 +169,7 @@ export default function ProductDetail({ params }: PageProps) {
                
               </div>
 
-              <div className="bg-white rounded-xl p-6 shadow-lg">
-                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                  <Users className="w-6 h-6 mr-2 text-yellow-500" />
-                  Dosage Information
-                </h3>
-                <div className="space-y-3">
-                  <DosageCard icon={Users} title="Adults" value={product.dosage.adults} />
-                  <DosageCard icon={Baby} title="Children" value={product.dosage.children} />
-                </div>
-              </div>
+            
             </motion.div>
           </div>
         </div>
@@ -194,10 +185,10 @@ export default function ProductDetail({ params }: PageProps) {
             viewport={{ once: true }}
             className="grid grid-cols-1 lg:grid-cols-2 gap-8"
           >
-            <InfoBlock title="Benefits" icon={CheckCircle} iconColor="text-green-500" items={(product.benefits || []) as string[]} />
+            {/* <InfoBlock title="Benefits" icon={CheckCircle} iconColor="text-green-500" items={(product.benefits || []) as string[]} />
             <InfoBlock title="Indications" icon={Shield} iconColor="text-blue-500" items={(product.indications || []) as string[]} />
             <InfoBlock title="Usage Instructions" icon={Info} iconColor="text-yellow-500" items={(product.usageInstructions || []) as string[]} />
-            <InfoBlock title="Storage Instructions" icon={Thermometer} iconColor="text-purple-500" items={product.storage as string[]} />
+            <InfoBlock title="Storage Instructions" icon={Thermometer} iconColor="text-purple-500" items={product.storage as string[]} /> */}
           </motion.div>
 
           <motion.div

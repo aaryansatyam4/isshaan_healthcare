@@ -180,10 +180,7 @@ export default function OurProducts() {
                   <div className="text-sm text-gray-600 mt-2 flex-1 space-y-1">
                     <InfoLine label={t("composition")} text={p.composition} />
                     <InfoLine label={t("packing")} text={p.packing} />
-                    <InfoLine
-                      label={t("countries")}
-                      text={p.registeredCountries}
-                    />
+                  
                   </div>
 
                   {/* details button */}

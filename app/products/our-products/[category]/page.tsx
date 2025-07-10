@@ -116,7 +116,7 @@ export default function CategoryProducts() {
                     className="w-full h-48 object-cover"
                     onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
                   />
-                  <Badge side="right" status={p.status} />
+               
                   <span className="absolute top-4 left-4 px-3 py-1 bg-yellow-500 text-white rounded-full text-xs font-semibold">
                     {t(`category.${p.type}`)}
                   </span>
@@ -131,22 +131,11 @@ export default function CategoryProducts() {
                   <div className="flex items-center space-x-4 text-sm text-gray-600">
                     <Calendar className="w-4 h-4 text-yellow-500" />
                     {p.shelfLife}
-                    <CheckCircle className="w-4 h-4 ml-4 text-green-500" />
-                    {p.status}
+                   
                   </div>
 
                   <div className="pt-4 border-t">
-                    <div className="flex items-start space-x-2 mb-4">
-                      <MapPin className="w-4 h-4 mt-0.5 text-yellow-500" />
-                      <div>
-                        <p className="text-sm font-semibold">
-                          {t("registeredCountries")}:
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          {p.registeredCountries}
-                        </p>
-                      </div>
-                    </div>
+              
 
                     <Link
                       href={`/products/our-products/${p.type.toLowerCase()}/${p.name
