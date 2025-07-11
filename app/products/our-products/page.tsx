@@ -170,8 +170,8 @@ export default function OurProducts() {
                     className="w-full h-48 object-cover"
                     onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
                   />
-                  <Badge side="right">{p.status}</Badge>
-                  <Badge side="left">{t(`category.${p.type}`)}</Badge>
+                  {/* <Badge side="right">{p.status}</Badge>
+                  <Badge side="left">{t(`category.${p.type}`)}</Badge> */}
                 </div>
 
                 {/* card text */}
