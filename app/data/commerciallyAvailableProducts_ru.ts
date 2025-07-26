@@ -2370,7 +2370,7 @@ export const commerciallyAvailableProducts = [
 {
   customDetailPage: true,
   id: 71,
-  name: "ТАБЛЕТКИ",
+  name: "Ремиджоинт",
   type: "Tablet",
   image: "remi.jpg",
   packing: "30 таблеток/60 таблеток (флакон из ПНД)",

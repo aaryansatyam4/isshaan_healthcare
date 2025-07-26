@@ -2370,7 +2370,7 @@ export const commerciallyAvailableProducts = [
   {
     customDetailPage: true,
     id: 71,
-    name: "COMPRIMÉ REMIJOINT",
+    name: "REMIJOINT",
     type: "Tablet",
     image: "remi.jpg",
     packing: "30 Comprimés/60 Comprimés (Flacon PEHD)",

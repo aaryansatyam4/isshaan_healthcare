@@ -2370,7 +2370,7 @@ export const commerciallyAvailableProducts = [
   {
   customDetailPage: true,
   id: 71,
-  name: "COMPRIMIDO REMIJOINT",
+  name: "REMIJOINT",
   type: "Tablet",
   image: "remi.jpg",
   packing: "30 Comprimidos/60 Comprimidos (Botella de HDPE)",
@@ -2690,7 +2690,7 @@ export const commerciallyAvailableProducts = [
     customDetailPage: false, id: 78,
     name: "Gránulos de hierbas Travrelax",
     type: "Granules",
-    image: "images/travrelax-herbal-granules.jpg",
+    image: "granules.jpeg",
     packing: "Sachete de 6 x 5gm",
     composition: "Mentha sylvestris, regaliz, jengibre, Vasaka",
     shelfLife: "3 years",

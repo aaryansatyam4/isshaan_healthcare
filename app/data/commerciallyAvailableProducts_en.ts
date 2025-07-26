@@ -1846,7 +1846,7 @@ color:["#FF0000","#008000","#FFFF00"],
    {
   customDetailPage: true,
   id: 71,
-  name: "REMIJOINT TABLET",
+  name: "REMIJOINT",
   type: "Tablet",
   image: "remi.jpg",
   packing: "30 Tablets/60 Tablets (HDPE Bottle)", // Clarified packing type
